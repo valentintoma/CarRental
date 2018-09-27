@@ -1,9 +1,31 @@
 package ro.jademy.carrental;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
 public class Shop {
     // Q: what fields and methods should this class contain?
 
+
+    List<Salesman> salesmens = new ArrayList<> (  );
+
+    public Shop(){
+        //adaug salemens
+
+
+    }
+
     public boolean login(String username, String password) {
+
+        //ciclez prin lista si verific daca si userul parola exista in lista
+
+        for (Salesman salesman:
+             ) {
+
+        }
+
+
 
         // TODO: implement a basic user login
 
@@ -12,28 +34,28 @@ public class Shop {
 
     public void showMenu() {
 
-        System.out.println(" -----------------------------------------------");
-        System.out.println("|    Welcome to the Jademy Car Rental Service   |");
-        System.out.println(" -----------------------------------------------");
-        System.out.println();
-        System.out.println("                    MAIN MENU                   ");
-        System.out.println("1. List all cars");
-        System.out.println("2. List available cars");
-        System.out.println("3. List rented cars");
-        System.out.println("4. Check income");
-        System.out.println("5. Logout");
-        System.out.println("6. Exit");
+        System.out.println ( " -----------------------------------------------" );
+        System.out.println ( "|    Welcome to the Jademy Car Rental Service   |" );
+        System.out.println ( " -----------------------------------------------" );
+        System.out.println ();
+        System.out.println ( "                    MAIN MENU                   " );
+        System.out.println ( "1. List all cars" );
+        System.out.println ( "2. List available cars" );
+        System.out.println ( "3. List rented cars" );
+        System.out.println ( "4. Check income" );
+        System.out.println ( "5. Logout" );
+        System.out.println ( "6. Exit" );
     }
 
     public void showListMenuOptions() {
 
-        System.out.println("Select an action from below:");
-        System.out.println("1. Filter by make");
-        System.out.println("2. Filter by model");
-        System.out.println("3. Filter by budget");
+        System.out.println ( "Select an action from below:" );
+        System.out.println ( "1. Filter by make" );
+        System.out.println ( "2. Filter by model" );
+        System.out.println ( "3. Filter by budget" );
         // TODO: add additional filter methods based on car specs
 
-        System.out.println("4. Back to previous menu");
+        System.out.println ( "4. Back to previous menu" );
 
     }
 
