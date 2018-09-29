@@ -1,7 +1,5 @@
 package ro.jademy.carrental;
 
-import java.util.Scanner;
-
 public class Main {
 
     public static void main(String[] args) {
@@ -9,15 +7,12 @@ public class Main {
 
         Shop shop = new Shop ();
 
-        Scanner sc = new Scanner ( System.in );
-        System.out.println ( "Write username : " );
-        String username = sc.nextLine ();
-        System.out.println ( "Write your password : " );
+    //   shop.loginMenu ();
+      shop.showMenu ();
+       // shop.showAvaibleCars ();
+   //     shop.showRentedCars ();
 
-        String passwrod = sc.nextLine ();
 
-        shop.login ( username, passwrod );
     }
-
 
 }
