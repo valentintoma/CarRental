@@ -7,6 +7,7 @@ import ro.jademy.carrental.cars.parts.Engine;
 import ro.jademy.carrental.persons.Salesman;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Shop {
@@ -25,8 +26,8 @@ public class Shop {
         salesmen.add ( new Salesman ( "Vlad", "Dumitru", "vlad1", "papusa1" ) );
         salesmen.add ( new Salesman ( "Alin", "Ionescu", "alin1", "papusa2" ) );
 
-        cars.add ( new Audi ( "A4", 2010, "blue", new Engine ( "Disel", 245, 2.0 ), true, 25, false ) );
-        cars.add ( new Audi ( "A6", 2011, "black", new Engine ( "Gas", 350, 3.0 ), false, 25, true ) );
+        cars.add ( new Audi ( "A4", 2010, "blue", new Engine ( "Disel", 245, 2.0 ), true, 10, false ) );
+        cars.add ( new Audi ( "A6", 2011, "black", new Engine ( "Gas", 350, 3.0 ), false, 15, true ) );
         cars.add ( new BMW ( "530", 2015, "green", new Engine ( "Diesel", 330, 3.0 ), false, 25, "Alloy", true ) );
 
     }
@@ -77,8 +78,9 @@ public class Shop {
         System.out.println ( "2. List available cars" );
         System.out.println ( "3. List rented cars" );
         System.out.println ( "4. Check income" );
-        System.out.println ( "5. Logout" );
-        System.out.println ( "6. Exit" );
+        System.out.println ( "5. Filter by " );
+        System.out.println ( "6. Logout" );
+        System.out.println ( "7 . Exit" );
 
         int choiceOption = sc.nextInt ();
         switch (choiceOption) {
@@ -88,7 +90,12 @@ public class Shop {
             }
             case 2: {
                 showAvaibleCars ();
-                rentAcar ();
+                wantToRentACar ();
+
+                System.out.println ( "Avaible cars remains are :" );
+                showAvaibleCars ();
+
+
                 break;
 
             }
@@ -100,9 +107,12 @@ public class Shop {
                 checkIncome ();
             }
             case 5: {
-                logOut ();
+                showFilterMenu ();
             }
             case 6: {
+                logOut ();
+            }
+            case 7: {
                 exit ();
             }
 
@@ -111,18 +121,68 @@ public class Shop {
 
     public void rentAcar() {
 
-        System.out.println ( "1.Wich care you do you want to rent?" );
-        int choice = sc.nextInt ();
-
-        int i = 0;
-
-        if (choice == i) {
-            choseRentedCar (choice);
-            System.out.println ("Ai ales mainsa corecta :");
+        System.out.println ( "Type car number that you want to rent :" );
+        int carRented = sc.nextInt ();
+        cars.get ( carRented ).setRented ( true );
 
     }
 
-}
+    public void wantToRentACar() {
+        System.out.println ( "Rent a Car? Yes / No " );
+        String answer = sc.next ();
+        if (answer.equalsIgnoreCase ( "Yes" )) {
+            rentAcar ();
+        } else if (answer.equalsIgnoreCase ( "no" ))
+            showMenu ();
+    }
+
+    public void filterByMake() {
+        System.out.println ( "Type the make you want to rent :" );
+        String makeAnswer = sc.next ();
+        List<Car> filtredMake = new ArrayList<> ();
+        for (Car car : cars) {
+            if (car.getMake ().equalsIgnoreCase ( makeAnswer )) {
+                filtredMake.add ( car );
+            }
+
+        }
+        System.out.println ( "Cars filtred by  : " + makeAnswer );
+        System.out.println ( filtredMake.toString () );
+
+        if (makeAnswer.isEmpty ()){
+            System.out.println ("We dont have that car");
+        }
+
+    }
+
+    public void filterByFuel() {
+        System.out.println ( "Type the fuel you want to rent ? Disel or Gas" );
+        String fuellAnswer = sc.next ();
+        List<Car> fuellList = new ArrayList<> ();
+        for (Car car : cars) {
+            if (car.getEngine ().getFuel ().equalsIgnoreCase ( fuellAnswer )) {
+                fuellList.add ( car );
+            }
+
+        }
+        System.out.println ( "Cars filtred by  : " + fuellAnswer );
+        System.out.println ( fuellList.toString () );
+
+    }
+    public void filterByBudget() {
+        System.out.println ( "Type the budget  you want to renta car ? From 10$ to 25$ " );
+        Integer priceAnswer = sc.nextInt ();
+        List<Car> priceList = new ArrayList<> ();
+        for (Car car : cars) {
+            if (car.getPrice () ==  ( priceAnswer )) {
+                priceList.add ( car );
+            }
+
+        }
+        System.out.println ( "Price for those cars is  : " + priceAnswer + "$" );
+        System.out.println ( priceList.toString () );
+
+    }
 
 
     public void showAllCars() {
@@ -154,35 +214,36 @@ public class Shop {
 
     }
 
-    public int choseRentedCar(int choiceSelected) {
-        for (Car car : cars) {
-            // trebuie sa aleg masina din lista cu masini libere
-            if (!car.getRented ()) {
-                System.out.println ( "Alege din lista corecta " );
-                System.out.println ( returnFreecars ().toString () );
+    public void showFilterMenu() {
+        System.out.println ( "1.Filter by make" );
+        System.out.println ( "2.Filter by model" );
+        System.out.println ( "3.Filter by budget" );
+        System.out.println ( "4.Back to Menu" );
+
+        int option = sc.nextInt ();
+        switch (option) {
+            case 1: {
+                filterByMake ();
+                break;
             }
-
-        }
-        return choiceSelected;
-
-    }
-
-
-    public ArrayList<Car> returnFreecars() {
-
-        ArrayList<Car> freeCars = new ArrayList<> ();
-        for (Car car
-                : cars) {
-            if (!car.getRented ()) {
-                freeCars.add ( car );
-
+            case 2: {
+                filterByFuel ();
+                break;
+            }
+            case 3: {
+                filterByBudget();
 
             }
+            break;
+            case 4: {
+                showMenu ();
+
+            }
+            break;
 
         }
-        return freeCars;
-
     }
+
 
     public void checkIncome() {
 
