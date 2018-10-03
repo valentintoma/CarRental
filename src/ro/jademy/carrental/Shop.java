@@ -34,7 +34,7 @@ public class Shop {
 
         cars.add ( new Audi ( "A4", 2010, "blue", new Engine ( FuellType.DIESEL, 245, 2.0 ), new GearBox ( GeaBoxModel.AUTOMATIC ), false, new BigDecimal ( 25 ), true ) );
         cars.add ( new Audi ( "A6", 2011, "black", new Engine ( FuellType.DIESEL, 350, 3.0 ), new GearBox ( GeaBoxModel.MANUAL ), false, new BigDecimal ( 10 ), true ) );
-        cars.add ( new BMW ( "530", 2015, "green", new Engine ( FuellType.GAS, 330, 3.0 ), new GearBox ( GeaBoxModel.SWITCHABLE ), true, new BigDecimal ( 25 ), "Alloy", true ) );
+        cars.add ( new BMW ( "530", 2015, "green", new Engine ( FuellType.GAS, 330, 3.0 ), new GearBox ( GeaBoxModel.SWITCHABLE ), true, new BigDecimal ( 30 ), "Alloy", true ) );
 
     }
 
@@ -129,7 +129,7 @@ public class Shop {
 
         System.out.println ( "Type car number that you want to rent :" );
         int carRented = sc.nextInt ();
-        cars.get ( carRented ).setRented ( true );
+        cars.get ( carRented - 1 ).setRented ( true );
 
     }
 
@@ -182,19 +182,60 @@ public class Shop {
         System.out.println ( "1.Show cars by lower price first" );
         System.out.println ( "2.Show cars by higher price first" );
         System.out.println ( "3.Show cars by a specified price" );
+        System.out.println ( "4.Show cars lower then :" );
+        System.out.println ( "5.Show cars higher then :" );
+        System.out.println ( "6.Back to previous menu" );
 
         int choiceSelected = sc.nextInt ();
         switch (choiceSelected) {
             case 1: {
-                 showCarsLowerPriceFirst();
+                showCarsLowerPriceFirst ();
+                showFilterMenu ();
+                break;
             }
             case 2: {
-                showCarsHigherPriceFirst();
+                showCarsHigherPriceFirst ();
+                break;
+
             }
             case 3: {
                 showCarsByPrice ();
+                break;
+
+            }
+            case 4: {
+                showCarsLowerThen ();
+                break;
+
+            }
+            case 5: {
+                showCarsHigherThen ();
+                break;
+
+            }
+            case 6: {
+                showFilterMenu ();
             }
         }
+
+    }
+
+    public void showCarsLowerThen() {
+        System.out.println ("Type the minium price :");
+        int price  = sc.nextInt ();
+        ArrayList filtredCars = new ArrayList (  );
+        for (Car car : cars){
+            if((BigDecimal.valueOf ( price ).compareTo ( car.getPrice () )) > 0)
+            {
+                filtredCars.add ( car );
+
+            }
+        }
+
+        System.out.println (filtredCars);  //un for pentru a le printa frumos :) 
+    }
+
+    public void showCarsHigherThen() {
 
     }
 
@@ -226,8 +267,12 @@ public class Shop {
                 priceList.add ( car );
             }
 
+
         }
-        System.out.println ( "Price for those cars is  : " + price + "$" );
+        if (priceList.isEmpty ()) {
+            System.out.println ( "We dont have a car with price " + price );
+        }
+
         System.out.println ( priceList.toString () );
 
     }
@@ -240,14 +285,16 @@ public class Shop {
 
     public void showAllCars() {
         for (Car car : cars) {
-            System.out.println ( car.toString () );
+            System.out.println ( (cars.indexOf ( car ) + 1) + " " + car.toString () );
         }
     }
 
     public void showAvaibleCars() {
+
         for (Car car : cars) {
             if (!car.getRented ()) {
-                System.out.println ( car.toString () );
+                System.out.println ( (cars.indexOf ( car ) + 1) + " " + car.toString () );
+
             }
 
         }
@@ -274,15 +321,17 @@ public class Shop {
         switch (option) {
             case 1: {
                 filterByMake ();
+                showFilterMenu ();
                 break;
             }
             case 2: {
                 filterByFuel ();
+                showFilterMenu ();
                 break;
             }
             case 3: {
                 showFilterByPrice ();
-
+                showFilterMenu ();
             }
             break;
             case 4: {
