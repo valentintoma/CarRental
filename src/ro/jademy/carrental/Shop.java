@@ -1,12 +1,14 @@
 package ro.jademy.carrental;
 
-import ro.jademy.carrental.cars.parts.Components.Cars.Audi.Audi;
-import ro.jademy.carrental.cars.parts.Components.Cars.BMW.BMW;
 import ro.jademy.carrental.cars.Car;
+import ro.jademy.carrental.cars.carsManufacture.Audi.Audi;
+import ro.jademy.carrental.cars.carsManufacture.BMW.BMW;
+import ro.jademy.carrental.cars.carsManufacture.comparator.PriceComparator;
+import ro.jademy.carrental.cars.carsManufacture.comparator.PriceComparatorDescending;
+import ro.jademy.carrental.cars.parts.Components.Engine.Engine;
 import ro.jademy.carrental.cars.parts.Components.Engine.FuellType;
 import ro.jademy.carrental.cars.parts.Components.GearBox;
 import ro.jademy.carrental.cars.parts.Components.geaBoxMaker.GeaBoxModel;
-import ro.jademy.carrental.cars.parts.Components.Engine.Engine;
 import ro.jademy.carrental.persons.Salesman;
 
 import java.math.BigDecimal;
@@ -30,9 +32,9 @@ public class Shop {
         salesmen.add ( new Salesman ( "Vlad", "Dumitru", "vlad1", "papusa1" ) );
         salesmen.add ( new Salesman ( "Alin", "Ionescu", "alin1", "papusa2" ) );
 
-        cars.add ( new Audi ( "A4", 2010, "blue", new Engine ( FuellType.DIESEL, 245, 2.0 ), new GearBox ( GeaBoxModel.AUTOMATIC ),false, new BigDecimal ( 25 ),true ) );
-        cars.add ( new Audi ( "A6", 2011, "black", new Engine ( FuellType.DIESEL, 350, 3.0 ),new GearBox ( GeaBoxModel.MANUAL ), false, new BigDecimal ( 10 ), true ) );
-        cars.add ( new BMW ( "530", 2015, "green", new Engine ( FuellType.GAS, 330, 3.0 ),new GearBox (GeaBoxModel.SWITCHABLE) ,true, new BigDecimal ( 25 ), "Alloy", true ) );
+        cars.add ( new Audi ( "A4", 2010, "blue", new Engine ( FuellType.DIESEL, 245, 2.0 ), new GearBox ( GeaBoxModel.AUTOMATIC ), false, new BigDecimal ( 25 ), true ) );
+        cars.add ( new Audi ( "A6", 2011, "black", new Engine ( FuellType.DIESEL, 350, 3.0 ), new GearBox ( GeaBoxModel.MANUAL ), false, new BigDecimal ( 10 ), true ) );
+        cars.add ( new BMW ( "530", 2015, "green", new Engine ( FuellType.GAS, 330, 3.0 ), new GearBox ( GeaBoxModel.SWITCHABLE ), true, new BigDecimal ( 25 ), "Alloy", true ) );
 
     }
 
@@ -153,8 +155,8 @@ public class Shop {
         System.out.println ( "Cars filtred by  : " + makeAnswer );
         System.out.println ( filtredMake.toString () );
 
-        if (makeAnswer.isEmpty ()){
-            System.out.println ("We dont have that car");
+        if (makeAnswer.isEmpty ()) {
+            System.out.println ( "We dont have that car" );
 
         }
 
@@ -174,21 +176,67 @@ public class Shop {
         System.out.println ( fuellList.toString () );
 
     }
-    public void filterByBudget() {
+
+    public void showFilterByPrice() {
+
+        System.out.println ( "1.Show cars by lower price first" );
+        System.out.println ( "2.Show cars by higher price first" );
+        System.out.println ( "3.Show cars by a specified price" );
+
+        int choiceSelected = sc.nextInt ();
+        switch (choiceSelected) {
+            case 1: {
+                 showCarsLowerPriceFirst();
+            }
+            case 2: {
+                showCarsHigherPriceFirst();
+            }
+            case 3: {
+                showCarsByPrice ();
+            }
+        }
+
+    }
+
+    public void showCarsLowerPriceFirst() {
+        List<Car> sortedCars = new ArrayList<> ();
+        for (Car car : cars) {
+            sortedCars.add ( car );
+        }
+        sortedCars.sort ( new PriceComparator () );
+        showCars ( sortedCars );
+    }
+
+
+    public void showCarsHigherPriceFirst() {
+        List<Car> sortedCarsDescending = new ArrayList<> ();
+        for (Car car : cars) {
+            sortedCarsDescending.add ( car );
+        }
+        sortedCarsDescending.sort ( new PriceComparatorDescending () );
+        showCars ( sortedCarsDescending );
+    }
+
+    public void showCarsByPrice() {
         System.out.println ( "Type the budget  you want to renta car ? From 10$ to 25$ " );
-        String priceAnswer = sc.next ();
+        String price = sc.next ();
         List<Car> priceList = new ArrayList<> ();
         for (Car car : cars) {
-            if (car.getPrice ().toString().equalsIgnoreCase  ( priceAnswer )) {   // de intrebat la curs
+            if (car.getPrice ().toString ().equalsIgnoreCase ( price )) {   // de intrebat la curs
                 priceList.add ( car );
             }
 
         }
-        System.out.println ( "Price for those cars is  : " + priceAnswer + "$" );
+        System.out.println ( "Price for those cars is  : " + price + "$" );
         System.out.println ( priceList.toString () );
 
     }
 
+    public void showCars(List<Car> cars) {
+        for (Car car : cars) {
+            System.out.println ( car.toString () );
+        }
+    }
 
     public void showAllCars() {
         for (Car car : cars) {
@@ -197,12 +245,9 @@ public class Shop {
     }
 
     public void showAvaibleCars() {
-        for (Car car
-                : cars) {
+        for (Car car : cars) {
             if (!car.getRented ()) {
                 System.out.println ( car.toString () );
-
-
             }
 
         }
@@ -221,7 +266,7 @@ public class Shop {
 
     public void showFilterMenu() {
         System.out.println ( "1.Filter by make" );
-        System.out.println ( "2.Filter by model" );
+        System.out.println ( "2.Filter by fuel" );
         System.out.println ( "3.Filter by budget" );
         System.out.println ( "4.Back to Menu" );
 
@@ -236,7 +281,7 @@ public class Shop {
                 break;
             }
             case 3: {
-                filterByBudget();
+                showFilterByPrice ();
 
             }
             break;
