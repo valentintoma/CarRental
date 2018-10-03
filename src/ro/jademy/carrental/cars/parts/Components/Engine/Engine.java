@@ -1,12 +1,12 @@
-package ro.jademy.carrental.cars.parts;
+package ro.jademy.carrental.cars.parts.Components.Engine;
 
 public class Engine {
 
-    private String fuel;
+    private FuellType fuel;
     private Integer horsePower;
     private Double cilinder;
 
-    public Engine(String fuel, Integer horsePower,Double cilinder) {
+    public Engine(FuellType fuel, Integer horsePower,Double cilinder) {
         this.fuel = fuel;
         this.horsePower = horsePower;
         this.cilinder = cilinder;
@@ -17,17 +17,14 @@ public class Engine {
     @Override
     public String toString() {
         return
-                "Fuel:" +" "+ fuel +" "+  "HorsePower:" +" "+  horsePower  +"  " +"Cilinder:"+" "+ cilinder +" " ;
+                "Fuel:" + fuel.getName () +", "+  "HorsePower:" +""+  horsePower  +"  ,  " +"Cilinder:"+""+ cilinder +", " ;
     }
 
-    public String getFuel() {
+    public FuellType getFuel() {
         return fuel;
     }
 
-    public void setFuel(String fuel) {
-        this.fuel = fuel;
 
-    }
 
     public Integer getHorsePower() {
         return horsePower;

@@ -1,11 +1,15 @@
 package ro.jademy.carrental;
 
-import ro.jademy.carrental.cars.Audi;
-import ro.jademy.carrental.cars.BMW;
+import ro.jademy.carrental.cars.parts.Components.Cars.Audi.Audi;
+import ro.jademy.carrental.cars.parts.Components.Cars.BMW.BMW;
 import ro.jademy.carrental.cars.Car;
-import ro.jademy.carrental.cars.parts.Engine;
+import ro.jademy.carrental.cars.parts.Components.Engine.FuellType;
+import ro.jademy.carrental.cars.parts.Components.GearBox;
+import ro.jademy.carrental.cars.parts.Components.geaBoxMaker.GeaBoxModel;
+import ro.jademy.carrental.cars.parts.Components.Engine.Engine;
 import ro.jademy.carrental.persons.Salesman;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -26,9 +30,9 @@ public class Shop {
         salesmen.add ( new Salesman ( "Vlad", "Dumitru", "vlad1", "papusa1" ) );
         salesmen.add ( new Salesman ( "Alin", "Ionescu", "alin1", "papusa2" ) );
 
-        cars.add ( new Audi ( "A4", 2010, "blue", new Engine ( "Disel", 245, 2.0 ), true, 10, false ) );
-        cars.add ( new Audi ( "A6", 2011, "black", new Engine ( "Gas", 350, 3.0 ), false, 15, true ) );
-        cars.add ( new BMW ( "530", 2015, "green", new Engine ( "Diesel", 330, 3.0 ), false, 25, "Alloy", true ) );
+        cars.add ( new Audi ( "A4", 2010, "blue", new Engine ( FuellType.DIESEL, 245, 2.0 ), new GearBox ( GeaBoxModel.AUTOMATIC ),false, new BigDecimal ( 25 ),true ) );
+        cars.add ( new Audi ( "A6", 2011, "black", new Engine ( FuellType.DIESEL, 350, 3.0 ),new GearBox ( GeaBoxModel.MANUAL ), false, new BigDecimal ( 10 ), true ) );
+        cars.add ( new BMW ( "530", 2015, "green", new Engine ( FuellType.GAS, 330, 3.0 ),new GearBox (GeaBoxModel.SWITCHABLE) ,true, new BigDecimal ( 25 ), "Alloy", true ) );
 
     }
 
@@ -82,8 +86,8 @@ public class Shop {
         System.out.println ( "6. Logout" );
         System.out.println ( "7 . Exit" );
 
-        int choiceOption = sc.nextInt ();
-        switch (choiceOption) {
+        int choiceChosed = sc.nextInt ();
+        switch (choiceChosed) {
             case 1: {
                 showAllCars ();
                 break;
@@ -151,16 +155,17 @@ public class Shop {
 
         if (makeAnswer.isEmpty ()){
             System.out.println ("We dont have that car");
+
         }
 
     }
 
     public void filterByFuel() {
-        System.out.println ( "Type the fuel you want to rent ? Disel or Gas" );
+        System.out.println ( "Type the fuel you want to rent ? Disel / Gas / Electric" );
         String fuellAnswer = sc.next ();
         List<Car> fuellList = new ArrayList<> ();
         for (Car car : cars) {
-            if (car.getEngine ().getFuel ().equalsIgnoreCase ( fuellAnswer )) {
+            if (car.getEngine ().getFuel ().getName ().equalsIgnoreCase ( fuellAnswer )) {
                 fuellList.add ( car );
             }
 
@@ -171,10 +176,10 @@ public class Shop {
     }
     public void filterByBudget() {
         System.out.println ( "Type the budget  you want to renta car ? From 10$ to 25$ " );
-        Integer priceAnswer = sc.nextInt ();
+        String priceAnswer = sc.next ();
         List<Car> priceList = new ArrayList<> ();
         for (Car car : cars) {
-            if (car.getPrice () ==  ( priceAnswer )) {
+            if (car.getPrice ().toString().equalsIgnoreCase  ( priceAnswer )) {   // de intrebat la curs
                 priceList.add ( car );
             }
 

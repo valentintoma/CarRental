@@ -1,6 +1,9 @@
 package ro.jademy.carrental.cars;
 
-import ro.jademy.carrental.cars.parts.Engine;
+import ro.jademy.carrental.cars.parts.Components.GearBox;
+import ro.jademy.carrental.cars.parts.Components.Engine.Engine;
+
+import java.math.BigDecimal;
 
 public abstract class Car {
     // Q: how can we better represent the car make?
@@ -10,14 +13,16 @@ public abstract class Car {
     private String color;
     private Engine engine;
     private Boolean rented;
-    private Integer price;
+    private BigDecimal price;
+    private GearBox gearBox;
 
-    public Car(String make, String model, Integer year, String color, Engine engine, Boolean rented, Integer price) {
+    public Car(String make, String model, Integer year, String color, Engine engine,GearBox gearBox, Boolean rented, BigDecimal price ) {
         this.make = make;
         this.model = model;
         this.year = year;
         this.color = color;
         this.engine = engine;
+        this.gearBox = gearBox;
         this.rented = rented;
         this.price = price;
 
@@ -25,6 +30,14 @@ public abstract class Car {
 
     public Car(){
 
+    }
+
+    public GearBox getGearBox() {
+        return gearBox;
+    }
+
+    public void setGearBox(GearBox gearBox) {
+        this.gearBox = gearBox;
     }
 
     public Boolean getRented() {
@@ -39,6 +52,10 @@ public abstract class Car {
         return model;
     }
 
+    public void setRented(Boolean rented) {
+        this.rented = rented;
+    }
+
     public Integer getYear() {
         return year;
     }
@@ -51,15 +68,19 @@ public abstract class Car {
         return engine;
     }
 
-    public Integer getPrice() {
+    public BigDecimal getPrice() {
         return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
     }
 
     @Override
     public String toString() {
         return
-                "Car: "+ " "+ make +" "+"Model:"+" "+ model+" "+  "Year:"+" "+ year +" "+ "Color:" +"  " +color +" " +  "Engine Specs:"+" "+  engine +" "+
-                "Rented:"+" "+ rented +" "+  "Price:"  +" "+ price ;
+                "Car: "+ " "+ make +" ,  "+"Model:"+" "+ model+"  , "+  "Year:"+" "+ year +"  , "+ "Color:" +"  " +color +"  , " +  "Engine Specs " +  engine +" "+ "Gearbox type : "+ gearBox + ",  "+
+                "Rented:"+" "+ rented +"  , "+  "Price:"  +" "+ price ;
 
 
 
