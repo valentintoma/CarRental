@@ -1,4 +1,4 @@
-package ro.jademy.carrental.cars.parts.Components.Engine;
+package ro.jademy.carrental.cars.parts.Components.engine;
 
 public enum FuellType {
     GAS ("Gasoline"),

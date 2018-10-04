@@ -8,4 +8,6 @@ public class Customer  extends Person {
         super(firstName,lastName);
         this.budget = budget;
     }
+
+
 }

@@ -1,7 +1,7 @@
 package ro.jademy.carrental.cars;
 
 import ro.jademy.carrental.cars.parts.Components.GearBox;
-import ro.jademy.carrental.cars.parts.Components.Engine.Engine;
+import ro.jademy.carrental.cars.parts.Components.engine.Engine;
 
 import java.math.BigDecimal;
 

@@ -1,8 +1,8 @@
-package ro.jademy.carrental.cars.parts.Components.Cars.Audi;
+package ro.jademy.carrental.cars.carsManufacture.audi;
 
 import ro.jademy.carrental.cars.Car;
 import ro.jademy.carrental.cars.parts.Components.GearBox;
-import ro.jademy.carrental.cars.parts.Components.Engine.Engine;
+import ro.jademy.carrental.cars.parts.Components.engine.Engine;
 
 import java.math.BigDecimal;
 

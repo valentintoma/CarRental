@@ -7,9 +7,9 @@ public class Main {
 
         Shop shop = new Shop ();
 
-    //   shop.loginMenu ();
-     // shop.showMenu ();
-       shop.showAvaibleCars ();
+       shop.loginMenu ();
+      shop.showMenu ();
+      //  shop.showAvaibleCars ();
    //     shop.showRentedCars ();
 
 

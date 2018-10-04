@@ -1,13 +1,13 @@
 package ro.jademy.carrental;
 
 import ro.jademy.carrental.cars.Car;
-import ro.jademy.carrental.cars.carsManufacture.Audi.Audi;
-import ro.jademy.carrental.cars.carsManufacture.BMW.BMW;
+import ro.jademy.carrental.cars.carsManufacture.audi.Audi;
+import ro.jademy.carrental.cars.carsManufacture.bmw.BMW;
 import ro.jademy.carrental.cars.carsManufacture.comparator.PriceComparator;
 import ro.jademy.carrental.cars.carsManufacture.comparator.PriceComparatorDescending;
-import ro.jademy.carrental.cars.parts.Components.Engine.Engine;
-import ro.jademy.carrental.cars.parts.Components.Engine.FuellType;
 import ro.jademy.carrental.cars.parts.Components.GearBox;
+import ro.jademy.carrental.cars.parts.Components.engine.Engine;
+import ro.jademy.carrental.cars.parts.Components.engine.FuellType;
 import ro.jademy.carrental.cars.parts.Components.geaBoxMaker.GeaBoxModel;
 import ro.jademy.carrental.persons.Salesman;
 
@@ -28,9 +28,9 @@ public class Shop {
         //adaug salemens
 
 
-        salesmen.add ( new Salesman ( "Mircea", "Chesca", "mircea1", "papusa" ) );
-        salesmen.add ( new Salesman ( "Vlad", "Dumitru", "vlad1", "papusa1" ) );
-        salesmen.add ( new Salesman ( "Alin", "Ionescu", "alin1", "papusa2" ) );
+        salesmen.add ( new Salesman ( "Mircea", "Chesca", "mircea1", "12345" ) );
+        salesmen.add ( new Salesman ( "Vlad", "Dumitru", "vlad1", "12345" ) );
+        salesmen.add ( new Salesman ( "Alin", "Ionescu", "alin1", "12345" ) );
 
         cars.add ( new Audi ( "A4", 2010, "blue", new Engine ( FuellType.DIESEL, 245, 2.0 ), new GearBox ( GeaBoxModel.AUTOMATIC ), false, new BigDecimal ( 25 ), true ) );
         cars.add ( new Audi ( "A6", 2011, "black", new Engine ( FuellType.DIESEL, 350, 3.0 ), new GearBox ( GeaBoxModel.MANUAL ), false, new BigDecimal ( 10 ), true ) );
@@ -56,13 +56,15 @@ public class Shop {
         for (Salesman salesman : salesmen) {
             if (username.equals ( salesman.getUserName () )) {
                 if (password.equals ( salesman.getPassWord () )) {
-                    System.out.println ( username + " Welcome back Boss!! " );
+                    System.out.println ("");
+                    System.out.println ( salesman.getFirstName () +" "+ salesman.getlastName () + "," + " Welcome back Boss!! " );
+                    System.out.println ("");
                     return true;
 
                 }
             }
         }
-        System.out.println ( "User name or password are wrong! try again" );
+        System.out.println ( "Username or password are wrong! try again" );
 
         return false;
     }
@@ -92,6 +94,7 @@ public class Shop {
         switch (choiceChosed) {
             case 1: {
                 showAllCars ();
+                backTofirstMenu ();
                 break;
             }
             case 2: {
@@ -100,6 +103,7 @@ public class Shop {
 
                 System.out.println ( "Avaible cars remains are :" );
                 showAvaibleCars ();
+                backTofirstMenu ();
 
 
                 break;
@@ -107,10 +111,12 @@ public class Shop {
             }
             case 3: {
                 showRentedCars ();
+                backTofirstMenu ();
                 break;
             }
             case 4: {
                 checkIncome ();
+                backTofirstMenu ();
             }
             case 5: {
                 showFilterMenu ();
@@ -125,6 +131,15 @@ public class Shop {
         }
     }
 
+    public void backTofirstMenu(){
+        System.out.println ("");
+        System.out.println ("2.Back to first Menu");
+        int choice = sc.nextInt ();
+        if ( choice == 2 ){
+            showMenu ();
+        }
+    }
+
     public void rentAcar() {
 
         System.out.println ( "Type car number that you want to rent :" );
@@ -134,6 +149,7 @@ public class Shop {
     }
 
     public void wantToRentACar() {
+        System.out.println ("");
         System.out.println ( "Rent a Car? Yes / No " );
         String answer = sc.next ();
         if (answer.equalsIgnoreCase ( "Yes" )) {
@@ -165,7 +181,7 @@ public class Shop {
     public void filterByFuel() {
         System.out.println ( "Type the fuel you want to rent ? Disel / Gas / Electric" );
         String fuellAnswer = sc.next ();
-        List<Car> fuellList = new ArrayList<> ();
+        ArrayList<Car> fuellList = new ArrayList<> ();
         for (Car car : cars) {
             if (car.getEngine ().getFuel ().getName ().equalsIgnoreCase ( fuellAnswer )) {
                 fuellList.add ( car );
@@ -173,8 +189,7 @@ public class Shop {
 
         }
         System.out.println ( "Cars filtred by  : " + fuellAnswer );
-        System.out.println ( fuellList.toString () );
-
+        showCars ( fuellList );
     }
 
     public void showFilterByPrice() {
@@ -221,26 +236,45 @@ public class Shop {
     }
 
     public void showCarsLowerThen() {
-        System.out.println ("Type the minium price :");
-        int price  = sc.nextInt ();
-        ArrayList filtredCars = new ArrayList (  );
-        for (Car car : cars){
-            if((BigDecimal.valueOf ( price ).compareTo ( car.getPrice () )) > 0)
-            {
+        System.out.println ( "Type the maximum price :" );
+        int price = sc.nextInt ();
+        ArrayList filtredCars = new ArrayList ();
+        for (Car car : cars) {
+            if ((BigDecimal.valueOf ( price ).compareTo ( car.getPrice () )) > 0) {
                 filtredCars.add ( car );
 
             }
         }
 
-        System.out.println (filtredCars);  //un for pentru a le printa frumos :) 
+
+        showCars ( filtredCars );  //un for pentru a le printa frumos :)
     }
 
-    public void showCarsHigherThen() {
 
+    public void showCarsHigherThen() {
+        System.out.println ( "Type the minimum price :" );
+        int price = sc.nextInt ();
+        ArrayList filtredCars = new ArrayList ();
+        for (Car car : cars) {
+            if ((BigDecimal.valueOf ( price ).compareTo ( car.getPrice () )) < 0) {
+                filtredCars.add ( car );
+
+            }
+        }
+
+
+        showCars ( filtredCars );  //un for pentru a le printa frumos :)
+    }
+
+
+    public void showCars(ArrayList<Car> cars) {
+        for (Car car : cars) {
+            System.out.println ( (cars.indexOf ( car ) + 1) + " " + car.toString () );
+        }
     }
 
     public void showCarsLowerPriceFirst() {
-        List<Car> sortedCars = new ArrayList<> ();
+        ArrayList<Car> sortedCars = new ArrayList<> ();
         for (Car car : cars) {
             sortedCars.add ( car );
         }
@@ -250,7 +284,7 @@ public class Shop {
 
 
     public void showCarsHigherPriceFirst() {
-        List<Car> sortedCarsDescending = new ArrayList<> ();
+        ArrayList<Car> sortedCarsDescending = new ArrayList<> ();
         for (Car car : cars) {
             sortedCarsDescending.add ( car );
         }
@@ -277,11 +311,6 @@ public class Shop {
 
     }
 
-    public void showCars(List<Car> cars) {
-        for (Car car : cars) {
-            System.out.println ( car.toString () );
-        }
-    }
 
     public void showAllCars() {
         for (Car car : cars) {
@@ -301,6 +330,7 @@ public class Shop {
     }
 
     public void showRentedCars() {
+        System.out.println ("");
         for (Car car : cars
                 ) {
             if (car.getRented ()) {

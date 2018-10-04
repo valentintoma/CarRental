@@ -22,6 +22,11 @@ public class Salesman extends Person {
         this.userName = userName;
     }
 
+    public String getlastName() {
+        this.lastName = lastName;
+        return lastName;
+    }
+
     public String getPassWord() {
         return passWord;
     }
@@ -29,5 +34,7 @@ public class Salesman extends Person {
     public void setPassWord(String passWord) {
         this.passWord = passWord;
     }
+
+
 }
 
