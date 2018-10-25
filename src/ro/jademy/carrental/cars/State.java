@@ -1,4 +1,4 @@
-package ro.jademy.carrental.cars.stateCar;
+package ro.jademy.carrental.cars;
 
 import java.util.Calendar;
 
@@ -32,5 +32,9 @@ public class State {
         this.rentedUntil = rentedUntil;
     }
 
+    @Override
+    public String toString() {
+        return "" + isRented ;
+    }
 }
 

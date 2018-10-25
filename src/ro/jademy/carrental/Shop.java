@@ -3,8 +3,6 @@ package ro.jademy.carrental;
 import ro.jademy.carrental.cars.Car;
 import ro.jademy.carrental.cars.carsManufacture.audi.Audi;
 import ro.jademy.carrental.cars.carsManufacture.bmw.BMW;
-import ro.jademy.carrental.cars.carsManufacture.comparator.PriceComparator;
-import ro.jademy.carrental.cars.carsManufacture.comparator.PriceComparatorDescending;
 import ro.jademy.carrental.cars.parts.Components.GearBox;
 import ro.jademy.carrental.cars.parts.Components.engine.Engine;
 import ro.jademy.carrental.cars.parts.Components.engine.FuellType;
@@ -12,14 +10,14 @@ import ro.jademy.carrental.cars.parts.Components.geaBoxMaker.GeaBoxModel;
 import ro.jademy.carrental.persons.Salesman;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 public class Shop {
     // Q: what fields and methods should this class contain?
 
-    private ArrayList<Salesman> salesmen = new ArrayList<> ();
+    private Set<Salesman> salesmen = new HashSet<> ();
     private ArrayList<Car> cars = new ArrayList<> ();
     private Scanner sc = new Scanner ( System.in );
 
@@ -32,12 +30,19 @@ public class Shop {
         salesmen.add ( new Salesman ( "Vlad", "Dumitru", "vlad1", "12345" ) );
         salesmen.add ( new Salesman ( "Alin", "Ionescu", "alin1", "12345" ) );
 
-        cars.add ( new Audi ( "A4", 2010, "blue", new Engine ( FuellType.DIESEL, 245, 2.0 ), new GearBox ( GeaBoxModel.AUTOMATIC ), false, new BigDecimal ( 25 ), true ) );
-        cars.add ( new Audi ( "A6", 2011, "black", new Engine ( FuellType.DIESEL, 350, 3.0 ), new GearBox ( GeaBoxModel.MANUAL ), false, new BigDecimal ( 10 ), true ) );
-        cars.add ( new BMW ( "530", 2015, "green", new Engine ( FuellType.GAS, 330, 3.0 ), new GearBox ( GeaBoxModel.SWITCHABLE ), true, new BigDecimal ( 30 ), "Alloy", true ) );
+        cars.add ( new Audi ( "A4", 2010, "blue", new Engine ( FuellType.DIESEL, 245, 2.0 ), new GearBox ( GeaBoxModel.AUTOMATIC ), false, new BigDecimal ( 25 ) ) );
+
+        cars.add ( new Audi ( "A8", 2011, "blue", new Engine ( FuellType.GAS, 330, 3.0 ), new GearBox ( GeaBoxModel.SWITCHABLE ), true, new BigDecimal ( 35 ) ) );
+        cars.add ( new Audi ( "A6", 2011, "black", new Engine ( FuellType.DIESEL, 350, 3.0 ), new GearBox ( GeaBoxModel.MANUAL ), false, new BigDecimal ( 10 ) ) );
+        cars.add ( new BMW ( "530", 2015, "green", new Engine ( FuellType.GAS, 330, 3.0 ), new GearBox ( GeaBoxModel.SWITCHABLE ), true, new BigDecimal ( 30 ) ) );
 
     }
 
+    public static List<Car> filterStream(List<Car> cars, Predicate<Car> predicate) {
+
+        cars.stream ().filter ( predicate ).collect ( Collectors.toList () );
+        return cars;
+    }
 
     public void loginMenu() {
         boolean logged;
@@ -46,19 +51,24 @@ public class Shop {
             System.out.println ( "Write username : " );
             String username = sc.nextLine ();
             System.out.println ( "Write your password : " );
-            String passwrod = sc.nextLine ();
-            logged = logUser ( username, passwrod );
+            String password = sc.nextLine ();
+            logged = logUser ( username, password );
         }
         while (!logged);
     }
+
+
+    //ciclez prin lista si verific daca si userul parola exista in lista
+
+    // TODO: implement a basic user login
 
     private boolean logUser(String username, String password) {
         for (Salesman salesman : salesmen) {
             if (username.equals ( salesman.getUserName () )) {
                 if (password.equals ( salesman.getPassWord () )) {
-                    System.out.println ("");
-                    System.out.println ( salesman.getFirstName () +" "+ salesman.getlastName () + "," + " Welcome back Boss!! " );
-                    System.out.println ("");
+                    System.out.println ( "" );
+                    System.out.println ( salesman.getFirstName () + " " + salesman.getlastName () + "," + " Welcome back Boss!! " );
+                    System.out.println ( "" );
                     return true;
 
                 }
@@ -68,12 +78,6 @@ public class Shop {
 
         return false;
     }
-
-
-    //ciclez prin lista si verific daca si userul parola exista in lista
-
-    // TODO: implement a basic user login
-
 
     public void showMenu() {
 
@@ -85,12 +89,12 @@ public class Shop {
         System.out.println ( "1. List all cars" );
         System.out.println ( "2. List available cars" );
         System.out.println ( "3. List rented cars" );
-        System.out.println ( "4. Check income" );
-        System.out.println ( "5. Filter by " );
-        System.out.println ( "6. Logout" );
-        System.out.println ( "7 . Exit" );
+        System.out.println ( "4. Filter by " );
+        System.out.println ( "5. Logout" );
+        System.out.println ( "6 . Exit" );
 
         int choiceChosed = sc.nextInt ();
+
         switch (choiceChosed) {
             case 1: {
                 showAllCars ();
@@ -104,8 +108,6 @@ public class Shop {
                 System.out.println ( "Avaible cars remains are :" );
                 showAvaibleCars ();
                 backTofirstMenu ();
-
-
                 break;
 
             }
@@ -115,27 +117,23 @@ public class Shop {
                 break;
             }
             case 4: {
-                checkIncome ();
-                backTofirstMenu ();
-            }
-            case 5: {
                 showFilterMenu ();
             }
-            case 6: {
+            case 5: {
                 logOut ();
             }
-            case 7: {
+            case 6: {
                 exit ();
             }
 
         }
     }
 
-    public void backTofirstMenu(){
-        System.out.println ("");
-        System.out.println ("2.Back to first Menu");
+    public void backTofirstMenu() {
+        System.out.println ( "" );
+        System.out.println ( "2.Back to first Menu" );
         int choice = sc.nextInt ();
-        if ( choice == 2 ){
+        if (choice == 2) {
             showMenu ();
         }
     }
@@ -143,53 +141,73 @@ public class Shop {
     public void rentAcar() {
 
         System.out.println ( "Type car number that you want to rent :" );
+        ArrayList rentedCars = new ArrayList ();
         int carRented = sc.nextInt ();
+
+
         cars.get ( carRented - 1 ).setRented ( true );
 
+        //add rented car in a list
     }
 
     public void wantToRentACar() {
-        System.out.println ("");
+        System.out.println ( "" );
         System.out.println ( "Rent a Car? Yes / No " );
         String answer = sc.next ();
         if (answer.equalsIgnoreCase ( "Yes" )) {
             rentAcar ();
-        } else if (answer.equalsIgnoreCase ( "no" ))
+        } else if (answer.equalsIgnoreCase ( "no" )) {
             showMenu ();
+        }
     }
 
     public void filterByMake() {
         System.out.println ( "Type the make you want to rent :" );
         String makeAnswer = sc.next ();
-        List<Car> filtredMake = new ArrayList<> ();
-        for (Car car : cars) {
-            if (car.getMake ().equalsIgnoreCase ( makeAnswer )) {
-                filtredMake.add ( car );
-            }
+        ArrayList<Car> filtredMake = new ArrayList<> ();
 
-        }
-        System.out.println ( "Cars filtred by  : " + makeAnswer );
-        System.out.println ( filtredMake.toString () );
+        System.out.println ( filterStream ( cars, (Car car) -> car.getMake ().equalsIgnoreCase ( makeAnswer ) ) );
 
-        if (makeAnswer.isEmpty ()) {
-            System.out.println ( "We dont have that car" );
 
-        }
+        //     filtredMake.stream ().forEach ( car -> car.getMake ().equalsIgnoreCase ( makeAnswer ) );
+//        for (Car car : cars) {
+//            if (car.getMake ().equalsIgnoreCase ( makeAnswer )) {
+//                filtredMake.add ( car );
+//            }
+//
+//        }
+        //       System.out.println ( "Cars filtred by  : " + makeAnswer );
 
+//        showCars ( filtredMake );
+
+//        if (makeAnswer.isEmpty ()) {
+//            System.out.println ( "We dont have that car" );
+//
+//        }
+//
+//    }
     }
 
     public void filterByFuel() {
         System.out.println ( "Type the fuel you want to rent ? Disel / Gas / Electric" );
         String fuellAnswer = sc.next ();
         ArrayList<Car> fuellList = new ArrayList<> ();
-        for (Car car : cars) {
-            if (car.getEngine ().getFuel ().getName ().equalsIgnoreCase ( fuellAnswer )) {
-                fuellList.add ( car );
-            }
 
-        }
-        System.out.println ( "Cars filtred by  : " + fuellAnswer );
-        showCars ( fuellList );
+        System.out.println ( filterStream ( cars, car -> car.getEngine ().getFuel ().getName ().equalsIgnoreCase ( fuellAnswer ) ) );
+
+
+//        for (Car car : cars) {
+//            if (car.getEngine ().getFuel ().getName ().equalsIgnoreCase ( fuellAnswer )) {
+//                fuellList.add ( car );
+//            }
+//
+//        }
+//        System.out.println ( "Cars filtred by fuel type  : " + fuellAnswer );
+//        showCars ( fuellList );
+//
+//        if (fuellList.isEmpty ()) {
+//            System.out.println ( "We dont have a car with that type of fuel  right now " );
+//        }
     }
 
     public void showFilterByPrice() {
@@ -238,57 +256,33 @@ public class Shop {
     public void showCarsLowerThen() {
         System.out.println ( "Type the maximum price :" );
         int price = sc.nextInt ();
-        ArrayList filtredCars = new ArrayList ();
-        for (Car car : cars) {
-            if ((BigDecimal.valueOf ( price ).compareTo ( car.getPrice () )) > 0) {
-                filtredCars.add ( car );
-
-            }
-        }
-
-
+        List<Car> filtredCars = cars.stream ().filter ( car -> BigDecimal.valueOf ( price ).compareTo ( car.getPrice () ) > 0 ).collect ( Collectors.toList () );
         showCars ( filtredCars );  //un for pentru a le printa frumos :)
-    }
 
+    }
 
     public void showCarsHigherThen() {
         System.out.println ( "Type the minimum price :" );
         int price = sc.nextInt ();
-        ArrayList filtredCars = new ArrayList ();
-        for (Car car : cars) {
-            if ((BigDecimal.valueOf ( price ).compareTo ( car.getPrice () )) < 0) {
-                filtredCars.add ( car );
-
-            }
-        }
-
-
+        List<Car> filtredCars = cars.stream ().filter ( car -> BigDecimal.valueOf ( price ).compareTo ( car.getPrice () ) < 0 ).collect ( Collectors.toList () );
         showCars ( filtredCars );  //un for pentru a le printa frumos :)
     }
 
 
-    public void showCars(ArrayList<Car> cars) {
+    public void showCars(List<Car> cars) {
         for (Car car : cars) {
             System.out.println ( (cars.indexOf ( car ) + 1) + " " + car.toString () );
         }
     }
 
     public void showCarsLowerPriceFirst() {
-        ArrayList<Car> sortedCars = new ArrayList<> ();
-        for (Car car : cars) {
-            sortedCars.add ( car );
-        }
-        sortedCars.sort ( new PriceComparator () );
+
+        List<Car> sortedCars = cars.stream ().sorted ( Comparator.comparing ( Car::getPrice ) ).collect ( Collectors.toList () );
         showCars ( sortedCars );
     }
 
-
     public void showCarsHigherPriceFirst() {
-        ArrayList<Car> sortedCarsDescending = new ArrayList<> ();
-        for (Car car : cars) {
-            sortedCarsDescending.add ( car );
-        }
-        sortedCarsDescending.sort ( new PriceComparatorDescending () );
+        List<Car> sortedCarsDescending = cars.stream ().sorted ( Comparator.comparing ( Car::getPrice ).reversed () ).collect ( Collectors.toList () );
         showCars ( sortedCarsDescending );
     }
 
@@ -296,6 +290,9 @@ public class Shop {
         System.out.println ( "Type the budget  you want to renta car ? From 10$ to 25$ " );
         String price = sc.next ();
         List<Car> priceList = new ArrayList<> ();
+
+        filterStream ( cars, car -> car.getPrice ().toString ().equalsIgnoreCase ( price ) );
+
         for (Car car : cars) {
             if (car.getPrice ().toString ().equalsIgnoreCase ( price )) {   // de intrebat la curs
                 priceList.add ( car );
@@ -321,7 +318,7 @@ public class Shop {
     public void showAvaibleCars() {
 
         for (Car car : cars) {
-            if (!car.getRented ()) {
+            if (!car.getCarState ().isRented ()) {
                 System.out.println ( (cars.indexOf ( car ) + 1) + " " + car.toString () );
 
             }
@@ -330,10 +327,11 @@ public class Shop {
     }
 
     public void showRentedCars() {
-        System.out.println ("");
+
+        System.out.println ( "" );
         for (Car car : cars
                 ) {
-            if (car.getRented ()) {
+            if (car.getCarState ().isRented ()) {
                 System.out.println ( car.toString () );
             }
 
@@ -379,6 +377,8 @@ public class Shop {
     }
 
     public void logOut() {
+        System.out.println ( "User logged out " );
+        System.out.println ( "See you soon back !" );
 
     }
 

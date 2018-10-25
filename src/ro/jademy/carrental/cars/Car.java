@@ -5,31 +5,50 @@ import ro.jademy.carrental.cars.parts.Components.engine.Engine;
 
 import java.math.BigDecimal;
 
-public abstract class Car {
+public abstract class Car implements Comparable<Car> {
     // Q: how can we better represent the car make?
     private String make;
     private String model;
     private Integer year;
     private String color;
     private Engine engine;
-    private Boolean rented;
+    private State carState = new State ();
     private BigDecimal price;
     private GearBox gearBox;
 
-    public Car(String make, String model, Integer year, String color, Engine engine,GearBox gearBox, Boolean rented, BigDecimal price ) {
+    public Car(String make, String model, Integer year, String color, Engine engine, GearBox gearBox, Boolean isRented, BigDecimal price) {
         this.make = make;
         this.model = model;
         this.year = year;
         this.color = color;
         this.engine = engine;
         this.gearBox = gearBox;
-        this.rented = rented;
+        this.carState.setRented ( isRented );
         this.price = price;
 
     }
 
-    public Car(){
 
+    public Car() {
+
+    }
+
+    @Override
+    public int compareTo(Car o) {
+        int makeType = this.make.compareTo ( o.make );
+        if (makeType == 0) {
+            int colorType = this.color.compareTo ( o.color );
+            if (colorType == 0) {
+                int yearType = this.year.compareTo ( o.year );
+                if (yearType == 0) {
+                    return 0;
+                }
+                return yearType;
+
+            }
+            return colorType;
+        }
+        return makeType;
     }
 
     public GearBox getGearBox() {
@@ -40,8 +59,17 @@ public abstract class Car {
         this.gearBox = gearBox;
     }
 
-    public Boolean getRented() {
-        return this.rented;
+    public State getCarState() {
+        return carState;
+    }
+
+
+    public void setCarState(State carState) {
+        this.carState = carState;
+    }
+
+    public void setRented(Boolean isRented) {
+        this.carState.setRented ( isRented );
     }
 
     public String getMake() {
@@ -50,10 +78,6 @@ public abstract class Car {
 
     public String getModel() {
         return model;
-    }
-
-    public void setRented(Boolean rented) {
-        this.rented = rented;
     }
 
     public Integer getYear() {
@@ -76,16 +100,17 @@ public abstract class Car {
         this.price = price;
     }
 
+
     @Override
     public String toString() {
         return
-                "Car: "+ " "+ make +" ,  "+"Model:"+" "+ model+"  , "+  "Year:"+" "+ year +"  , "+ "Color:" +"  " +color +"  , " +  "Engine Specs " +  engine +" "+ "Gearbox type : "+ gearBox + ",  "+
-                "Rented:"+" "+ rented +"  , "+  "Price:"  +" "+ price ;
+                "Make: " + " " + make + " ,  " + "Model:" + " " + model + " ,  " + "Year:" + " " + year + " ,  " + "Color:" + "  " + color + " ,  " + "Engine Specs " + engine + " " + "Gearbox type : " + gearBox + " ,  " +
+                        "Rented:" + " " + carState + " ,  " + "Price:" + " " + price;
 
+    }
+}
 
-
-
-        //
+//
 //    // Q: how can we better represent the car type?
 //    public String carType; // coupe, sedan, hatchback, convertible, wagon, SUV
 //
@@ -108,5 +133,3 @@ public abstract class Car {
 //    // Q: do we need a constructor other than the default one?
 //    // Q: how can we better protect the car data?
 
-    }
-}

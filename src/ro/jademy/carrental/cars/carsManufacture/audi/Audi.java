@@ -7,14 +7,11 @@ import ro.jademy.carrental.cars.parts.Components.engine.Engine;
 import java.math.BigDecimal;
 
 public  class Audi extends Car {
-    private  Boolean sunRoof;
 
-    public Audi(String model, Integer year, String color, Engine engine, GearBox gearBox, Boolean rented, BigDecimal price, Boolean sunRoof) {
-        super ( "Audi", model, year, color, engine,gearBox, rented, price );
-        this.sunRoof = sunRoof;
+
+    public Audi( String model, Integer year, String color, Engine engine, GearBox gearBox, Boolean isRented, BigDecimal price) {
+        super ( "Audi", model, year, color, engine, gearBox, isRented, price );
     }
-
-
 }
 
 

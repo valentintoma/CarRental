@@ -7,12 +7,14 @@ public class Main {
 
         Shop shop = new Shop ();
 
-       shop.loginMenu ();
+     //  shop.loginMenu ();
       shop.showMenu ();
+
+
       //  shop.showAvaibleCars ();
    //     shop.showRentedCars ();
-
+        //in filter show only free cars
+        //State class inner class in Car class
 
     }
-
 }
